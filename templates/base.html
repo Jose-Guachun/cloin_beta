@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{% block title %}{% endblock %}</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'bootstrap-5.2.1-dist/css/bootstrap.css' %}">
+        {% block heading %}{% endblock %}
+    </head>
+    <body>
+        <div>
+            <!--Nav -->
+            <header>
+                {% block nav %}{% endblock %}
+            </header>
+            <!--Nav -->
+
+            <!--Body-->
+            <div class="container-fluid">
+                {% block content %}{% endblock %}
+            </div>
+            <!--Body -->
+
+            <!--Footer-->
+            {% block footer %}{% endblock %}
+            <!--Footer -->
+        </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <!-- Vue JS -->
+        <script type="text/javascript" src="{% static 'bootstrap-5.2.1-dist/js/bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bootstrap-5.2.1-dist/js/bootstrap.bundle.js' %}"></script>
+        {% block jscontent %}{% endblock %}
+    </body>
+</html>
