@@ -18,14 +18,12 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from users import views
-from administrador import views
 
 urlpatterns = [
     #Admin
     path('admin/', admin.site.urls),
 
     # Urls de apps creadas
-    path('administrador/', include(('administrador.urls', 'administrador'), namespace='administrador'))
+    path('', include(('inventario.urls', 'inventario'), namespace='inventario'))
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

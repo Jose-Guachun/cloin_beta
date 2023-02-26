@@ -36,8 +36,6 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display=(
         'pk',
         'user',
-        'country',
-        'province',
         'city',
         'dni',
         'gender',
