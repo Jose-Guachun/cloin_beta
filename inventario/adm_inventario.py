@@ -1,5 +1,6 @@
 import requests
 #Django
+from django.db import transaction
 from django.views.generic.edit import FormView
 from django.views.generic import DetailView, TemplateView
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
@@ -16,8 +17,14 @@ class ViewSet(View):
         context = {}
         context['action'] = action = self.kwargs['action']
         if action == 'productos':
-            request['session']=1
-            template_name = 'administrador/viewproductos.html'
+            try:
+                with transaction.atomic():
+                    # request['session'] = 1
+                    template_name = 'administrador/viewproductos.html'
+            except Exception as ex:
+                transaction.set_rollback(True)
+                return JsonResponse({"result": "bad", "mensaje": str(ex)})
+
         else:
             template_name = 'administrador/viewadministrador.html'
         return render(request, template_name, context)
