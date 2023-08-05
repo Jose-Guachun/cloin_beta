@@ -7,7 +7,7 @@ from django.db import models
 from django.contrib.auth.models import Group
 
 #Models
-from users.models import User, Profile, City, Country, Province
+from users.models import User, Profile, City, Country, Province, Person
 
 # Register your models here.
 
@@ -31,8 +31,8 @@ class CityAdmin(admin.ModelAdmin):
         'province',
         'city',)
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
     list_display=(
         'pk',
         'user',
@@ -42,8 +42,6 @@ class ProfileAdmin(admin.ModelAdmin):
         'birth_date',
         'biography',
         'phone_number',
-        'education_level',
-        'work_area',
         'picture',)
 
     list_display_links=('pk', 'user', 'city',)
@@ -53,15 +51,13 @@ class ProfileAdmin(admin.ModelAdmin):
         'birth_date',
         'biography',
         'phone_number',
-        'education_level',
-        'work_area',
         'picture',)
 
     search_fields=(
         'user__email',
         'user__username',
         'user__first_name',
-        'user__last_name',
+        'user__last_name_first',
         'phone_number',
         )
 
@@ -78,8 +74,7 @@ class ProfileAdmin(admin.ModelAdmin):
                     'user', 'picture',
                     'country','province','city','favorites',
                     'gender',
-                    'birth_date','education_level',
-                    'work_area',
+                    'birth_date',
                     ),
         }),
         ('Extra info',{
@@ -94,13 +89,13 @@ class ProfileAdmin(admin.ModelAdmin):
     )
     readonly_fields=('created', 'modified',)
 
-class ProfileInline(admin.StackedInline):
-    model=Profile
+class PersonInline(admin.StackedInline):
+    model=Person
     can_delete=False
-    verbose_name_plural='profiles'
+    verbose_name_plural='personas'
 
 class UserAdmin(BaseUserAdmin):
-    inlines=(ProfileInline,)
+    inlines=(PersonInline,)
     list_display=(
         'username',
         'email',

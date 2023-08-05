@@ -16,24 +16,31 @@ class ViewSet(View):
     def get(self, request, *args, **kwargs):
         context = {}
         context['action'] = action = self.kwargs['action']
+        if not action:
+            return render(request, template_name, context)
         if action == 'productos':
             try:
-                with transaction.atomic():
-                    # request['session'] = 1
-                    template_name = 'administrador/viewproductos.html'
+                context['title'] = 'Productos'
+                # request['session'] = 1
+                template_name = 'productos/viewproductos.html'
             except Exception as ex:
-                transaction.set_rollback(True)
-                return JsonResponse({"result": "bad", "mensaje": str(ex)})
+                return JsonResponse({"result": False, "mensaje": str(ex)})
 
-        else:
+        if action =='inicio':
+            context['title']='Inicio'
             template_name = 'administrador/viewadministrador.html'
         return render(request, template_name, context)
 
     def post(self, request, *args, **kwargs):
         action = request.POST['action']
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            # <process form cleaned data>
-            return HttpResponseRedirect('/success/')
+        with transaction.atomic():
+            try:
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                    # <process form cleaned data>
+                    return HttpResponseRedirect('/success/')
+            except Exception as ex:
+                transaction.set_rollback(True)
+                return JsonResponse({"result": "bad", "mensaje": str(ex)})
 
         return render(request, self.template_name, {'form': form})
